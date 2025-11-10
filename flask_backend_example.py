@@ -14,8 +14,15 @@ from flask_cors import CORS
 import os
 
 app = Flask(__name__)
-# Enable CORS for all routes
-CORS(app)
+# Enable CORS for all routes with logging
+CORS(app, resources={r"/api/*": {"origins": "*"}})
+app.logger.setLevel("DEBUG")
+
+# Log all requests
+@app.before_request
+def log_request_info():
+    app.logger.debug('Headers: %s', request.headers)
+    app.logger.debug('Body: %s', request.get_data())
 
 # ===========================
 # Configuration
@@ -69,29 +76,82 @@ def chat():
     Response: { "message": "AI response" }
     """
     try:
+        app.logger.info('Received chat request')
         data = request.json
+        app.logger.debug('Request data: %s', data)
         messages = data.get('messages', [])
         
         if not messages:
             return jsonify({'error': 'No messages provided'}), 400
         
         # Get the last user message
-        last_message = messages[-1]['content']
+        last_message = messages[-1]['content'].lower().strip()
+        app.logger.info('Processing message: %s', last_message)
         
-        # TODO: Replace with your AI model (OpenAI, Gemini, etc.)
-        # Example with OpenAI:
-        # import openai
-        # response = openai.ChatCompletion.create(
-        #     model="gpt-4",
-        #     messages=[
-        #         {"role": "system", "content": "You are a helpful Gujarat travel guide."},
-        #         *messages
-        #     ]
-        # )
-        # ai_response = response.choices[0].message.content
+        # Simple rule-based responses for demonstration
+        if any(word in last_message for word in ['hello', 'hi', 'hey', 'hy']):
+            ai_response = "Hello! I'm your Gujarat travel assistant. How can I help you plan your journey?"
         
-        # For now, return a sample response
-        ai_response = f"I received your message: '{last_message}'. I'm a sample response. Please integrate your AI model to provide real responses about Gujarat travel planning."
+        elif any(word in last_message for word in ['places', 'visit', 'tourist', 'spots']):
+            ai_response = """Here are some must-visit places in Gujarat:
+1. Statue of Unity, Kevadia - World's tallest statue
+2. Somnath Temple - One of the 12 Jyotirlingas
+3. Rann of Kutch - World's largest salt desert
+4. Gir National Park - Home to Asiatic Lions
+5. Sabarmati Ashram, Ahmedabad - Gandhi's residence
+6. Dwarkadhish Temple - Ancient Krishna temple
+7. Laxmi Vilas Palace, Vadodara - Largest private dwelling
+8. Rani ki Vav, Patan - UNESCO World Heritage site
+
+Would you like more details about any of these places?"""
+        
+        elif any(word in last_message for word in ['food', 'eat', 'cuisine', 'restaurant']):
+            ai_response = """Gujarat offers a rich variety of vegetarian cuisine:
+1. Dhokla - Steamed savory snack
+2. Thepla - Multi-grain flatbread
+3. Fafda-Jalebi - Popular breakfast combo
+4. Undhiyu - Mixed vegetable dish
+5. Khandvi - Gram flour rolls
+6. Gujarati Thali - Complete meal experience
+
+Would you like restaurant recommendations or recipes?"""
+        
+        elif any(word in last_message for word in ['weather', 'climate', 'when', 'best time']):
+            ai_response = """The best time to visit Gujarat is from October to March when the weather is pleasant.
+• October-February: Cool and dry (15-25°C)
+• March-June: Hot summer (25-45°C)
+• July-September: Monsoon season
+
+Different regions have specific best times:
+• Rann of Kutch: November to February (Rann Utsav)
+• Gir National Park: December to March
+• Temple Circuit: Year-round, but avoid summer
+• Beaches: September to March"""
+        
+        elif any(word in last_message for word in ['transport', 'travel', 'reach', 'how to go']):
+            ai_response = """Gujarat is well-connected by various modes of transport:
+1. By Air: Major airports in Ahmedabad, Vadodara, Surat, and Rajkot
+2. By Train: Well-connected railway network
+3. By Road: Excellent highway network
+4. Local Transport:
+   - State buses (GSRTC)
+   - Private buses
+   - Cabs and auto-rickshaws
+   - Metro in Ahmedabad
+
+Would you like specific route information?"""
+        
+        else:
+            ai_response = """I'd be happy to help you plan your Gujarat trip! I can assist with:
+1. Popular tourist destinations
+2. Local cuisine and restaurants
+3. Weather and best time to visit
+4. Transportation options
+5. Cultural events and festivals
+6. Accommodation recommendations
+7. Custom itinerary planning
+
+What would you like to know more about?"""
         
         return jsonify({
             'message': ai_response
