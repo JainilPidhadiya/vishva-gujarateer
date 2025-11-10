@@ -1,9 +1,61 @@
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, DollarSign, Search } from "lucide-react";
 import heroBg from "@/assets/hero-bg.jpg";
+import { generateItinerary, type SearchParams } from "@/lib/api";
+import { useToast } from "@/hooks/use-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 export const Hero = () => {
+  const [searchParams, setSearchParams] = useState<SearchParams>({
+    destination: "",
+    activity: "",
+    date: "",
+    budget: "",
+  });
+  const [itinerary, setItinerary] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showItinerary, setShowItinerary] = useState(false);
+  const { toast } = useToast();
+
+  const handleSearch = async () => {
+    if (!searchParams.destination && !searchParams.activity) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter at least a destination or activity",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const result = await generateItinerary(searchParams);
+      setItinerary(result);
+      setShowItinerary(true);
+      
+      toast({
+        title: "Itinerary Generated!",
+        description: "Your personalized Gujarat itinerary is ready",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate itinerary. Make sure your Flask server is running.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <section className="relative min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Hero Background */}
@@ -36,6 +88,8 @@ export const Hero = () => {
               <MapPin className="text-primary h-5 w-5 flex-shrink-0" />
               <Input 
                 placeholder="Where do you want to go?"
+                value={searchParams.destination}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, destination: e.target.value }))}
                 className="border-0 bg-transparent focus-visible:ring-0 p-0"
               />
             </div>
@@ -43,6 +97,8 @@ export const Hero = () => {
               <Search className="text-primary h-5 w-5 flex-shrink-0" />
               <Input 
                 placeholder="What do you want to do?"
+                value={searchParams.activity}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, activity: e.target.value }))}
                 className="border-0 bg-transparent focus-visible:ring-0 p-0"
               />
             </div>
@@ -50,6 +106,8 @@ export const Hero = () => {
               <Calendar className="text-primary h-5 w-5 flex-shrink-0" />
               <Input 
                 placeholder="When do you want to go?"
+                value={searchParams.date}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, date: e.target.value }))}
                 className="border-0 bg-transparent focus-visible:ring-0 p-0"
               />
             </div>
@@ -57,15 +115,41 @@ export const Hero = () => {
               <DollarSign className="text-primary h-5 w-5 flex-shrink-0" />
               <Input 
                 placeholder="Budget"
+                value={searchParams.budget}
+                onChange={(e) => setSearchParams(prev => ({ ...prev, budget: e.target.value }))}
                 className="border-0 bg-transparent focus-visible:ring-0 p-0"
               />
             </div>
           </div>
-          <Button className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all">
-            Plan My Adventure
+          <Button 
+            onClick={handleSearch}
+            disabled={isLoading}
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground h-12 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
+          >
+            {isLoading ? "Planning..." : "Plan My Adventure"}
           </Button>
         </div>
       </div>
+
+      {/* Itinerary Dialog */}
+      <Dialog open={showItinerary} onOpenChange={setShowItinerary}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl text-primary">Your Gujarat Itinerary</DialogTitle>
+            <DialogDescription>
+              Personalized travel plan based on your preferences
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 mt-4">
+            {itinerary.map((day, index) => (
+              <div key={index} className="bg-muted p-4 rounded-lg">
+                <h3 className="font-semibold text-primary mb-2">Day {day.day}: {day.title}</h3>
+                <p className="text-sm text-muted-foreground">{day.description}</p>
+              </div>
+            ))}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

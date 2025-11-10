@@ -1,0 +1,19 @@
+# Flask Backend Requirements
+# Install with: pip install -r requirements.txt
+
+Flask==3.0.0
+flask-cors==4.0.0
+python-dotenv==1.0.0
+
+# AI Model Integration (choose based on your needs)
+openai==1.12.0        # For OpenAI GPT models
+# google-generativeai  # For Google Gemini
+# anthropic            # For Claude
+
+# Database (uncomment based on your choice)
+# SQLAlchemy==2.0.25   # For SQL databases
+# pymongo==4.6.1       # For MongoDB
+# psycopg2-binary      # For PostgreSQL
+
+# Optional utilities
+requests==2.31.0
