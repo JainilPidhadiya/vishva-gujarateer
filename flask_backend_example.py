@@ -108,52 +108,52 @@ def chat():
         if any(word in last_message for word in ['hello', 'hi', 'hey', 'hy']):
             ai_response = "Hello! I'm your Gujarat travel assistant. How can I help you plan your journey?"
         
-#         elif any(word in last_message for word in ['places', 'visit', 'tourist', 'spots']):
-#             ai_response = """Here are some must-visit places in Gujarat:
-# 1. Statue of Unity, Kevadia - World's tallest statue
-# 2. Somnath Temple - One of the 12 Jyotirlingas
-# 3. Rann of Kutch - World's largest salt desert
-# 4. Gir National Park - Home to Asiatic Lions
-# 5. Sabarmati Ashram, Ahmedabad - Gandhi's residence
-# 6. Dwarkadhish Temple - Ancient Krishna temple
-# 7. Laxmi Vilas Palace, Vadodara - Largest private dwelling
-# 8. Rani ki Vav, Patan - UNESCO World Heritage site
+        elif any(word in last_message for word in ['places', 'visit', 'tourist', 'spots']):
+            ai_response = """Here are some must-visit places in Gujarat:
+1. Statue of Unity, Kevadia - World's tallest statue
+2. Somnath Temple - One of the 12 Jyotirlingas
+3. Rann of Kutch - World's largest salt desert
+4. Gir National Park - Home to Asiatic Lions
+5. Sabarmati Ashram, Ahmedabad - Gandhi's residence
+6. Dwarkadhish Temple - Ancient Krishna temple
+7. Laxmi Vilas Palace, Vadodara - Largest private dwelling
+8. Rani ki Vav, Patan - UNESCO World Heritage site
 
-# Would you like more details about any of these places?"""
+Would you like more details about any of these places?"""
         
-#         elif any(word in last_message for word in ['food', 'eat', 'cuisine', 'restaurant']):
-#             ai_response = """Gujarat offers a rich variety of vegetarian cuisine:
-# 1. Dhokla - Steamed savory snack
-# 2. Thepla - Multi-grain flatbread
-# 3. Fafda-Jalebi - Popular breakfast combo
-# 4. Undhiyu - Mixed vegetable dish
-# 5. Khandvi - Gram flour rolls
-# 6. Gujarati Thali - Complete meal experience
+        elif any(word in last_message for word in ['food', 'eat', 'cuisine', 'restaurant']):
+            ai_response = """Gujarat offers a rich variety of vegetarian cuisine:
+1. Dhokla - Steamed savory snack
+2. Thepla - Multi-grain flatbread
+3. Fafda-Jalebi - Popular breakfast combo
+4. Undhiyu - Mixed vegetable dish
+5. Khandvi - Gram flour rolls
+6. Gujarati Thali - Complete meal experience
 
-# Would you like restaurant recommendations or recipes?"""
+Would you like restaurant recommendations or recipes?"""
         
-#         elif any(word in last_message for word in ['weather', 'climate', 'when', 'best time']):
-#             ai_response = """The best time to visit Gujarat is from October to March when the weather is pleasant.
-# • October-February: Cool and dry (15-25°C)
-# • March-June: Hot summer (25-45°C)
-# • July-September: Monsoon season
+        elif any(word in last_message for word in ['weather', 'climate', 'when', 'best time']):
+            ai_response = """The best time to visit Gujarat is from October to March when the weather is pleasant.
+• October-February: Cool and dry (15-25°C)
+• March-June: Hot summer (25-45°C)
+• July-September: Monsoon season
 
-# Different regions have specific best times:
-# • Rann of Kutch: November to February (Rann Utsav)
-# • Gir National Park: December to March
-# • Temple Circuit: Year-round, but avoid summer
-# • Beaches: September to March"""
+Different regions have specific best times:
+• Rann of Kutch: November to February (Rann Utsav)
+• Gir National Park: December to March
+• Temple Circuit: Year-round, but avoid summer
+• Beaches: September to March"""
         
-#         elif any(word in last_message for word in ['transport', 'travel', 'reach', 'how to go']):
-#             ai_response = """Gujarat is well-connected by various modes of transport:
-# 1. By Air: Major airports in Ahmedabad, Vadodara, Surat, and Rajkot
-# 2. By Train: Well-connected railway network
-# 3. By Road: Excellent highway network
-# 4. Local Transport:
-#    - State buses (GSRTC)
-#    - Private buses
-#    - Cabs and auto-rickshaws
-#    - Metro in Ahmedabad
+        elif any(word in last_message for word in ['transport', 'travel', 'reach', 'how to go']):
+            ai_response = """Gujarat is well-connected by various modes of transport:
+1. By Air: Major airports in Ahmedabad, Vadodara, Surat, and Rajkot
+2. By Train: Well-connected railway network
+3. By Road: Excellent highway network
+4. Local Transport:
+   - State buses (GSRTC)
+   - Private buses
+   - Cabs and auto-rickshaws
+   - Metro in Ahmedabad
 
 # Would you like specific route information?"""
         
